@@ -48,4 +48,18 @@ const infixToFunction = {
     nodupes: nums => [...new Set(nums).values()]
   };
   
+  // Add an empty string property to handle potential edge cases
+  spreadsheetFunctions[""] = arg => arg;
   
+  // Function to apply spreadsheet functions to a given formula
+  const applyFunction = str => {
+    const noHigh = highPrecedence(str);
+    const infix = /([\d.]+)([+-])([\d.]+)/;
+    const str2 = infixEval(noHigh, infix);
+    const functionCall = /([a-z]*)\(([0-9., ]*)\)(?!.*\()/i;
+    const toNumberList = args => args.split(",").map(parseFloat);
+    const apply = (fn, args) => spreadsheetFunctions[fn.toLowerCase()](toNumberList(args));
+    return str2.replace(functionCall, (match, fn, args) => spreadsheetFunctions.hasOwnProperty(fn.toLowerCase()) ? apply(fn, args) : match);
+  }
+  
+ 
