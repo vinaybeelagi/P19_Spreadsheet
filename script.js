@@ -82,4 +82,16 @@ const infixToFunction = {
     return functionExpanded === x ? functionExpanded : evalFormula(functionExpanded, cells);
   }
   
+  // Event handler when the window is loaded
+  window.onload = () => {
+    const container = document.getElementById("container");
   
+    // Function to create labels for spreadsheet columns and rows
+    const createLabel = (name) => {
+      const label = document.createElement("div");
+      label.className = "label";
+      label.textContent = name;
+      container.appendChild(label);
+    }
+  
+    
